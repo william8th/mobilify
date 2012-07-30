@@ -26,7 +26,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
 
-**The class Mobile_Detect from (https://code.google.com/p/php-mobile-detect/)[https://code.google.com/p/php-mobile-detect/] is used. Mobile_Detect inherits its MIT license.**
+**The class Mobile_Detect from [https://code.google.com/p/php-mobile-detect/](https://code.google.com/p/php-mobile-detect/) is used. Mobile_Detect inherits its MIT license.**
 
 Installation
 ------------
