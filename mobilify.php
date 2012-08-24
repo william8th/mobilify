@@ -29,16 +29,26 @@ License: GPLv2
     Supporting GCWCID movement. For more info please visit http://is.gd/gcwcid/
 */
 
+//Change the template if mobile device detected on the premise that mobile view is switched off
 
+//Initialize variable
+$GLOBALS['mobile'] = false;
 
+if( false == $GLOBALS['mobile'] ) {
+    include_once( 'Mobile_Detect.php' );
+    $detector = new Mobile_Detect();
 
-/*
-    Change the template if mobile device detected
-*/
-include_once( 'Mobile_Detect.php' );
-$detector = new Mobile_Detect();
+    $tablet_mobile_view = get_option( 'mobilify_tablet_mobile_view' );
+    if( $detector->isMobile() ) {
+        $GLOBALS['mobile'] = true;
+        if( 'on' !== $tablet_mobile_view && $detector->isTablet() ) {
+            $GLOBALS['mobile'] = false;
+        }
+    }
+}
 
-if( $detector->isMobile() ) {
+//Change the template
+if( true === $GLOBALS['mobile'] ) {
     add_filter( 'stylesheet', 'get_template_fn' );
     add_filter( 'template', 'get_template_fn' );
 }
@@ -84,8 +94,10 @@ add_action( 'admin_init', 'mobilify_init_settings_fn' );
 
 function mobilify_init_settings_fn() {
     register_setting( 'mobilify_options_group', 'mobilify_option' );
+    register_setting( 'mobilify_options_group', 'mobilify_tablet_mobile_view' );
     add_settings_section( 'mobilify_section', 'Mobilify', 'section_text_fn', __FILE__ );
     add_settings_field( 'mobilify_field', __( 'Select Mobilify Theme' ), 'mobilify_display_input_fn', __FILE__, 'mobilify_section' );
+    add_settings_field( 'mobilify_tablet_field', __( 'Load mobile view in tablet' ), 'mobilify_display_tablet_fn', __FILE__, 'mobilify_section' );
 } //mobilify_init_settings_fn
 
 function section_text_fn() {
@@ -103,5 +115,14 @@ function mobilify_display_input_fn() {
     }
     echo "</select>";
 } //mobilify_display_input_fn
+
+function mobilify_display_tablet_fn() {
+    $option = get_option( 'mobilify_tablet_mobile_view' );
+    $checked = '';
+    if( 'on' == $option ) {
+        $checked = ' checked="yes"';
+    }
+    echo '<input type="checkbox" name="mobilify_tablet_mobile_view"'.$checked.' />';
+} //mobilify_display_tablet_fn
 
 ?>
